@@ -64,13 +64,5 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return cell
     }
     
-    
-    func reloadTableView() {
-        viewModel.reloadObservable.observeOn(MainScheduler.instance)
-            .subscribe(onNext: { () in
-                self.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
-    }
 }
 
