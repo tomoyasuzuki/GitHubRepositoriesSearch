@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -21,11 +21,7 @@ class ViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
-    /*
- 
-        カレンダーアプリではAPIを呼び出すのが一回でしかも画面表示時だったのでViewDidLoadに記述したが今回の場合はテキストが変更されるたびにAPIを呼び出す必要があるので、まずは検索窓を監視対象にする。
- 
-    */
+    var repositories: [[String:String]] = []
     
     // 検索窓を監視対象にする
     // テキストが空の場合はデータ取得を行わない
@@ -36,9 +32,23 @@ class ViewController: UIViewController {
             .filter { $0.characters.count > 0 }
     }
     
+    // MARK: - Life Cycle -
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+    }
+    
+    // MARK: - Delegate -
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return repositories.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = repositories[indexPath.row]["name"]
+        cell.detailTextLabel?.text = repositories[indexPath.row]["html_url"]
+        return cell
     }
 }
 
