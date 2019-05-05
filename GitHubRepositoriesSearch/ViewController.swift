@@ -20,9 +20,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     let viewModel = ViewModel()
     
     let disposeBag = DisposeBag()
-    
-    var repositories: [[String:String]] = []
-    
+
     // 検索窓を監視対象にする
     var searchBarObservable: Observable<String> {
         return searchBar.rx.text
@@ -39,10 +37,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.delegate = self
         tableView.dataSource = self
         
-        // どこで呼び出すべきなのか？　
-        viewModel.getRepository()
+
+        searchBarObservable.asObservable()
+            .subscribe(onNext: { (queryText) in
+                self.viewModel.getRepository(queryText: queryText)
+            })
         
-        // イベントが流れてくるたびにtableViewをリロード
+        // reloadSubjectからの通知が来るたびにtableViewをリロード
         viewModel.reloadObservable.observeOn(MainScheduler.instance)
             .subscribe(onNext: { () in
                 self.tableView.reloadData()
@@ -53,13 +54,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     // MARK: - Delegate -
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repositories.count
+        return viewModel.repositories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = repositories[indexPath.row]["name"]
-        cell.detailTextLabel?.text = repositories[indexPath.row]["html_url"]
+        cell.textLabel?.text = viewModel.repositories[indexPath.row]["name"]
+        cell.detailTextLabel?.text = viewModel.repositories[indexPath.row]["html_url"]
         return cell
     }
     

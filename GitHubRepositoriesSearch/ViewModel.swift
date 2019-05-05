@@ -21,17 +21,16 @@ class ViewModel {
     private let reloadSubject:PublishSubject<Void> = PublishSubject<Void>()
     var reloadObservable: Observable<Void> { return reloadSubject.asObservable() }
     
-    func getRepository() {
-        // 検索窓のイベントを購読
-        viewController.searchBarObservable
-            .subscribe(onNext: { (queryText) in
-                // 検索キーワードに基づいてAPIを叩く
-                self.githubrepositoryApi.fetchRepository(queryText: queryText).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .default))
-                
-                
-                // データの成形処理が終了したら通知を出す
-                self.reloadSubject.onNext(())
-            })
+    func getRepository(queryText: String) {
+        
+        self.githubrepositoryApi.fetchRepository(queryText: queryText).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .default))
+        /*
+         
+            データの成形処理（オペレーターなどを使用）
+            完了次第 reloadSubject.onNext(()) を実行する
+         
+         */
+        
     }
 }
 
