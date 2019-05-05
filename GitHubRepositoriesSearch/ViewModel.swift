@@ -16,28 +16,20 @@ class ViewModel {
     
     var viewController = ViewController()
     
-    //取得したデータを格納する変数
-    var repositories: Array = [""]
+    var repositories: [[String:String]] = []
     
-    // 基本的には『データを取得し、成形してViewへ通知を出す』ということをやる
-    // その後のViewの変更はViewの責務なのでViewModelでは行わない
-    // 具体的には、ViewModelからの通知に基づいてViewはテーブルをリロードする
-    // テーブルをリロードするという点に関しては前回と同じなので同じやり方(データの取得と成形が終わったのちSubjectで明示的に通知を出す方法)をやってみる
-    // まずはストリームを作る
     private let reloadSubject:PublishSubject<Void> = PublishSubject<Void>()
     var reloadObservable: Observable<Void> { return reloadSubject.asObservable() }
     
-    // 検索窓が監視対象なので検索窓のテキストが流れているストリームを購読してonNextでAPIを叩く
     func getRepository() {
-        // 検索窓のイベントを購読する
+        // 検索窓のイベントを購読
         viewController.searchBarObservable
             .subscribe(onNext: { (queryText) in
+                // 検索キーワードに基づいてAPIを叩く
                 self.githubrepositoryApi.fetchRepository(queryText: queryText).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .default))
-                // ------------オペレータなどを使用して成形する-------------
                 
                 
-                
-                // 成形が終了したら通知を出す（本来は成形処理の最後に含める）
+                // データの成形処理が終了したら通知を出す
                 self.reloadSubject.onNext(())
             })
     }

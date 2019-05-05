@@ -24,7 +24,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var repositories: [[String:String]] = []
     
     // 検索窓を監視対象にする
-    // テキストが空の場合はデータ取得を行わない
     var searchBarObservable: Observable<String> {
         return searchBar.rx.text
             .filter { $0 != nil}
@@ -36,6 +35,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // どこで呼び出すべきなのか？　
+        viewModel.getRepository()
+        
+        // イベントが流れてくるたびにtableViewをリロード
+        viewModel.reloadObservable.observeOn(MainScheduler.instance)
+            .subscribe(onNext: { () in
+                self.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Delegate -
@@ -49,6 +61,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         cell.textLabel?.text = repositories[indexPath.row]["name"]
         cell.detailTextLabel?.text = repositories[indexPath.row]["html_url"]
         return cell
+    }
+    
+    
+    func reloadTableView() {
+        viewModel.reloadObservable.observeOn(MainScheduler.instance)
+            .subscribe(onNext: { () in
+                self.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
