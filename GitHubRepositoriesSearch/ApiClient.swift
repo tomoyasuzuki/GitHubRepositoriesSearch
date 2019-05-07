@@ -9,26 +9,31 @@
 import Alamofire
 import RxSwift
 
+enum ApiError: Error {
+    case invalidurl
+}
+
 class ApiClient {
     
-    func get(url: String) -> Single<Any> {
+    func get(url: String) throws -> Single<Data> {
         
-        return Single.create(subscribe: { observer -> Disposable in
-            let url = URL(string: url)
+        return Single.create { observer -> Disposable in
+            guard let url = URL(string: url) else {
+                return observer(.error(ApiError.invalidurl)) as! Disposable
+            }
             
-            //get request
-            Alamofire.request(url!)
+            Alamofire.request(url, method: .get)
                 .validate()
-                .responseJSON(completionHandler: { (response) in
-                    if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        do {
-                            observer(.success(utf8Text))
-                        } catch {
-                            observer(.error(error.localizedDescription as! Error))
-                        }
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        observer(.success(data))
+                    case .failure(let error):
+                        observer(.error(error))
+                        print(error.localizedDescription)
                     }
-                })
+                }
             return Disposables.create()
-        })
+        }
     }
 }

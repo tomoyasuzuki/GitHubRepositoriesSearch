@@ -16,10 +16,11 @@ class ViewModel {
     
     var viewController = ViewController()
     
+    // 取得したデータを格納する変数
     var repositories: [[String:String]] = []
     
     private let reloadSubject:PublishSubject<Void> = PublishSubject<Void>()
-    var reloadObservable: Observable<Void> { return reloadSubject.asObservable() }
+    var reloadObservable: Observable<Void> { return reloadSubject.asObservable() } 
     
     func getRepository(queryText: String) {
         

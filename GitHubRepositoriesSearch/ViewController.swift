@@ -37,13 +37,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.delegate = self
         tableView.dataSource = self
         
-
+        // データ取得を依頼
         searchBarObservable.asObservable()
             .subscribe(onNext: { (queryText) in
                 self.viewModel.getRepository(queryText: queryText)
             })
         
-        // reloadSubjectからの通知が来るたびにtableViewをリロード
+            .disposed(by: disposeBag)
+        
+        // データ取得完了通知を受け取り、テーブルをリロードする
         viewModel.reloadObservable.observeOn(MainScheduler.instance)
             .subscribe(onNext: { () in
                 self.tableView.reloadData()
