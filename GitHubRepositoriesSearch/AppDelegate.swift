@@ -16,25 +16,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     static var container: Container = {
         let container = Container()
-        
         // ApiClientのregister
         container.register(ApiClient.self) { _ in ApiClient()}
         
         // GitHubRepositoriesSearchApiのregister
         container.register(GitHubRepositoriesSearchApi.self) { r in GitHubRepositoriesSearchApi(api: r.resolve(ApiClient.self)!)}
         
-        //ViewModelのregister
+        // ViewModelのregister
         container.register(ViewModel.self) { r in ViewModel(githubrepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
         
-        //ViewControllerのregister
-        container.register(ViewController.self) { r in ViewController(viewModel: r.resolve(ViewModel.self)!)}
+//        // ViewControllerのregister
+//        container.register(ViewController.self) { r in ViewController()}
         
         return container
     }()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         return true
     }
 

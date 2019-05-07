@@ -17,18 +17,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet weak var tableView: UITableView!
     
-    let viewModel: ViewModel
+    var viewModel: ViewModel? = nil
     
     let disposeBag = DisposeBag()
-    
-    init(viewModel: ViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // 検索窓を監視対象にする
     var searchBarObservable: Observable<String> {
@@ -37,11 +28,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             .map { $0!}
             .filter { $0.characters.count > 0 }
     }
-    
+
     // MARK: - Life Cycle -
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel = AppDelegate.container.resolve(ViewModel.self)
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -49,13 +42,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         // データ取得を依頼
         searchBarObservable.asObservable()
             .subscribe(onNext: { queryText in
-                self.viewModel.getRepository(queryText: queryText)
+                self.viewModel!.getRepository(queryText: queryText)
             })
         
             .disposed(by: disposeBag)
         
         // データ取得完了通知を受け取り、テーブルをリロードする
-        viewModel.reloadObservable.observeOn(MainScheduler.instance)
+        viewModel!.reloadObservable.observeOn(MainScheduler.instance)
             .subscribe(onNext: { () in
                 self.tableView.reloadData()
             })
@@ -65,13 +58,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     // MARK: - Delegate -
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.repositories.count
+        return viewModel!.repositories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = viewModel.repositories[indexPath.row]["name"]
-        cell.detailTextLabel?.text = viewModel.repositories[indexPath.row]["html_url"]
+        cell.textLabel?.text = viewModel!.repositories[indexPath.row]["name"]
+        cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row]["html_url"]
         return cell
     }
     
