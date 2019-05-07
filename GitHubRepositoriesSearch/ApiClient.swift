@@ -15,7 +15,7 @@ enum ApiError: Error {
 
 class ApiClient {
     
-    func get(url: String) throws -> Single<Data> {
+    func get(url: String) -> Single<Data> {
         
         return Single.create { observer in
             let disposable = Disposables.create()
@@ -35,7 +35,7 @@ class ApiClient {
                         print(error.localizedDescription)
                     }
                 }
-            return Disposables.create()
+            return disposable
         }
     }
 }
