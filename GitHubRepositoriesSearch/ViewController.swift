@@ -63,8 +63,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = viewModel!.repositories[indexPath.row]["name"]
-        cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row]["html_url"]
+        cell.textLabel?.text = viewModel!.repositories[indexPath.row].name
+        print(viewModel!.repositories[indexPath.row].name)
+        cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row].htmlURL
         return cell
     }
     

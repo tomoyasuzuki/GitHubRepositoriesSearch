@@ -17,12 +17,12 @@ class GitHubRepositoriesSearchApi {
         self.api = api
     }
     
-    func fetchRepository(queryText: String) -> Single<[GitHubSearchRepositoryElement]> {
+    func fetchRepository(queryText: String) -> Single<GitHubSearchRepository> {
         // usersの次のパスには検索窓に入力した文字列が入る
         return api.get(url: "https://api.github.com/users/\(queryText)/repos")
             .map { data in
                 // JSONをデコードする
-                try JSONDecoder().decode([GitHubSearchRepositoryElement].self, from: data)
+                try JSONDecoder().decode(GitHubSearchRepository.self, from: data)
         }
     }
 }
