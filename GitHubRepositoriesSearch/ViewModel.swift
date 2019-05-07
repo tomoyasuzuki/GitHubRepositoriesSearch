@@ -12,9 +12,11 @@ import RxCocoa
 class ViewModel {
     
     // GitHubRepositoriesSearchApi と viewController を使用可能な状態にする（Swinjectで後々DIをする）
-    let githubrepositoryApi = GitHubRepositoriesSearchApi()
+    let githubrepositoryApi: GitHubRepositoriesSearchApi
     
-    var viewController = ViewController()
+    init(githubrepositoryApi: GitHubRepositoriesSearchApi) {
+        self.githubrepositoryApi = githubrepositoryApi
+    }
     
     // 取得したデータを格納する変数
     var repositories: [[String:String]] = []

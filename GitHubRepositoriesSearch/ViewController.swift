@@ -17,10 +17,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet weak var tableView: UITableView!
     
-    let viewModel = ViewModel()
+    let viewModel: ViewModel
     
     let disposeBag = DisposeBag()
-
+    
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // 検索窓を監視対象にする
     var searchBarObservable: Observable<String> {
         return searchBar.rx.text

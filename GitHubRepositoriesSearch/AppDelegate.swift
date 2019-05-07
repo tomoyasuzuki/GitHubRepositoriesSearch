@@ -7,11 +7,30 @@
 //
 
 import UIKit
+import Swinject
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    static var container: Container = {
+        let container = Container()
+        
+        // ApiClientのregister
+        container.register(ApiClient.self) { _ in ApiClient()}
+        
+        // GitHubRepositoriesSearchApiのregister
+        container.register(GitHubRepositoriesSearchApi.self) { r in GitHubRepositoriesSearchApi(api: r.resolve(ApiClient.self)!)}
+        
+        //ViewModelのregister
+        container.register(ViewModel.self) { r in ViewModel(githubrepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
+        
+        //ViewControllerのregister
+        container.register(ViewController.self) { r in ViewController(viewModel: r.resolve(ViewModel.self)!)}
+        
+        return container
+    }()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

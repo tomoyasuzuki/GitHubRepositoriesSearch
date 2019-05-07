@@ -6,12 +6,16 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-import Alamofire
 import RxSwift
 
-class GitHubRepositoriesSearchApi: ApiClient {
+
+class GitHubRepositoriesSearchApi {
     
-    private let api = ApiClient()
+    private let api: ApiClient
+    
+    init(api: ApiClient) {
+        self.api = api
+    }
     
     let resultArray: [[String:AnyObject]] = []
     
