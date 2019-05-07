@@ -39,7 +39,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         // データ取得を依頼
         searchBarObservable.asObservable()
-            .subscribe(onNext: { (queryText) in
+            .subscribe(onNext: { queryText in
                 self.viewModel.getRepository(queryText: queryText)
             })
         

@@ -17,9 +17,11 @@ class ApiClient {
     
     func get(url: String) throws -> Single<Data> {
         
-        return Single.create { observer -> Disposable in
+        return Single.create { observer in
+            let disposable = Disposables.create()
             guard let url = URL(string: url) else {
-                return observer(.error(ApiError.invalidurl)) as! Disposable
+                observer(.error(ApiError.invalidurl))
+                return disposable
             }
             
             Alamofire.request(url, method: .get)
