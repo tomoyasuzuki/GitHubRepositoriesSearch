@@ -39,14 +39,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.delegate = self
         tableView.dataSource = self
         
-        // データ取得を依頼
-        searchBarObservable.asObservable()
-            .subscribe(onNext: { queryText in
-                self.viewModel!.getRepository(queryText: queryText)
-            })
-        
-            .disposed(by: disposeBag)
-        
         // データ取得完了通知を受け取り、テーブルをリロードする
         viewModel!.reloadObservable.observeOn(MainScheduler.instance)
             .subscribe(onNext: { () in
@@ -64,7 +56,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = viewModel!.repositories[indexPath.row].name
-        print(viewModel!.repositories[indexPath.row].name)
         cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row].htmlURL
         return cell
     }

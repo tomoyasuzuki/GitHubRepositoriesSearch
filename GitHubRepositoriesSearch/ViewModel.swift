@@ -14,8 +14,11 @@ class ViewModel {
     // GitHubRepositoriesSearchApi と viewController を使用可能な状態にする（Swinjectで後々DIをする）
     private let githubrepositoryApi: GitHubRepositoriesSearchApi
     
-    init(githubrepositoryApi: GitHubRepositoriesSearchApi) {
+    private let searchBarObservable: Observable<String>
+    
+    init(githubrepositoryApi: GitHubRepositoriesSearchApi, searchBarObservable: Observable<String>) {
         self.githubrepositoryApi = githubrepositoryApi
+        self.searchBarObservable = searchBarObservable
     }
     
     // 取得したデータを格納する変数
