@@ -9,9 +9,10 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    // MARK: - Property -
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -20,14 +21,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var viewModel: ViewModel? = nil
     
     let disposeBag = DisposeBag()
-    
-    // 検索窓を監視対象にする
-    var searchBarObservable: Observable<String> {
-        return searchBar.rx.text
-            .filter { $0 != nil}
-            .map { $0!}
-            .filter { $0.characters.count > 0 }
-    }
 
     // MARK: - Life Cycle -
     
@@ -39,9 +32,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.delegate = self
         tableView.dataSource = self
         
-        // データ取得完了通知を受け取り、テーブルをリロードする
-        viewModel!.reloadObservable.observeOn(MainScheduler.instance)
+        viewModel?.getObservable(observable: searchBar.rx.text.orEmpty.asObservable())
             .subscribe(onNext: { () in
+                print("tableview reload")
                 self.tableView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -56,9 +49,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = viewModel!.repositories[indexPath.row].name
-        cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row].htmlURL
+        cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row].url
+        
+        cell.detailTextLabel?.textColor = UIColor.gray
         return cell
     }
-    
 }
 

@@ -7,6 +7,6 @@
 //
 
 struct Repository {
-    let name: String
-    let htmlURL: String
+    let name: String?
+    let url: String?
 }

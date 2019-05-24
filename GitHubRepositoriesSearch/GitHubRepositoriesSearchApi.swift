@@ -18,11 +18,17 @@ class GitHubRepositoriesSearchApi {
     }
     
     func fetchRepository(queryText: String) -> Single<GitHubSearchRepository> {
-        // usersの次のパスには検索窓に入力した文字列が入る
+        print(queryText)
         return api.get(url: "https://api.github.com/users/\(queryText)/repos")
+            .do(onSuccess: { (data) in
+                print("debug1: \(data)")
+            })
             .map { data in
                 // JSONをデコードする
                 try JSONDecoder().decode(GitHubSearchRepository.self, from: data)
-        }
+            }
+            .do(onSuccess: { (data) in
+                print("debug2")
+            })
     }
 }

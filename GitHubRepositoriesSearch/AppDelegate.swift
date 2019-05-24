@@ -25,9 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // ViewModelのregister
         container.register(ViewModel.self) { r in ViewModel(githubrepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
         
-//        // ViewControllerのregister
-//        container.register(ViewController.self) { r in ViewController()}
-        
         return container
     }()
 
