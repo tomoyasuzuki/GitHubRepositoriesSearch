@@ -34,7 +34,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         viewModel?.getObservable(observable: searchBar.rx.text.orEmpty.asObservable())
             .subscribe(onNext: { () in
-                print("tableview reload")
                 self.tableView.reloadData()
             })
             .disposed(by: disposeBag)

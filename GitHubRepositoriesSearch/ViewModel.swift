@@ -29,7 +29,7 @@
         
         func getObservable(observable: Observable<String>) -> Observable<()> {
             return observable
-                .debounce(1.0, scheduler: MainScheduler.instance)
+                .debounce(0.5, scheduler: MainScheduler.instance)
                 .filter { $0.count >= 2}
                 .flatMap { self.githubrepositoryApi.fetchRepository(queryText: $0) }
                 .map { elements -> [Repository] in
