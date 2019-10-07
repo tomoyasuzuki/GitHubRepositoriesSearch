@@ -8,14 +8,7 @@
 
 import RxSwift
 
-/*
- 
- viewmodelは入力のストリームを出力のストリームに変換するだけのシンプルな構成。
- 入力を元にmodelに処理を依頼し、modelから返ってきたストリームを出力用のストリームに変換している
- 
- */
-
-class GitHubRepositoriesSearchApi: RequestProtocol {
+final class GitHubRepositoriesSearchApi: RequestProtocol {
     private let api: ApiClient
     
     init(api: ApiClient) {
@@ -23,13 +16,10 @@ class GitHubRepositoriesSearchApi: RequestProtocol {
     }
     
     func fetchRepository(queryText: String) -> Single<GitHubSearchRepository> {
-        return api.get(url: baseUrl + path + "\(queryText)" + "/repos")
+        return api.request(url: baseUrl + path + "\(queryText)" + "/repos")
             .map { data in
-                // JSONをデコードする
                 try JSONDecoder().decode(GitHubSearchRepository.self, from: data)
         }
     }
 }
-
-//https://api.github.com/users/\(queryText)/repos"
 

@@ -2,9 +2,10 @@
 //  RequestProtocol.swift
 //  GitHubRepositoriesSearch
 //
-//  Created by 鈴木友也 on 2019/06/29.
+//  Created by 鈴木友也 on 2019/10/07.
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
+
 import Alamofire
 
 protocol RequestProtocol {
@@ -17,11 +18,11 @@ extension RequestProtocol {
     var baseUrl: String {
         return "https://api.github.com"
     }
-    
+
     var path: String {
         return "/users/"
     }
-    
+
     var method: HTTPMethod {
         return .get
     }

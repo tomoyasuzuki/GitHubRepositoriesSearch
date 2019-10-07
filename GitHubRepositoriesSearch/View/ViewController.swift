@@ -6,37 +6,30 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-    
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Property -
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    private @IBOutlet var searchBar: UISearchBar!
     
-    @IBOutlet weak var tableView: UITableView!
+    private @IBOutlet var tableView: UITableView!
     
-    var viewModel: ViewModel? = nil
+    private let disposeBag = DisposeBag()
     
-    let disposeBag = DisposeBag()
-
+    var viewModel: ViewModel?
+    
     // MARK: - Life Cycle -
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = AppDelegate.container.resolve(ViewModel.self)
-        
         tableView.delegate = self
         tableView.dataSource = self
         
-        viewModel?.getObservable(observable: searchBar.rx.text.orEmpty.asObservable())
-            .subscribe(onNext: { () in
-                self.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
+        configureViewModel()
     }
     
     // MARK: - Delegate -
@@ -53,5 +46,18 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         cell.detailTextLabel?.textColor = UIColor.gray
         return cell
     }
+    
+    private func configureViewModel() {
+        viewModel = AppDelegate.container.resolve(ViewModel.self)
+        
+        let input = ViewModel.Input(searchTextDidChange: searchBar.rx.text.orEmpty.asDriver())
+        let output = viewModel!.bind(input: input)
+        
+        output
+            .repositories
+            .drive(onNext: { _ in
+                self.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
 }
-
