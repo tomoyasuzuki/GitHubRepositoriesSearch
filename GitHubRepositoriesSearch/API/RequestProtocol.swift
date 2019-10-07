@@ -6,12 +6,11 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-import Alamofire
+import Foundation
 
 protocol RequestProtocol {
     var baseUrl: String { get }
     var path: String { get }
-    var method: HTTPMethod { get }
 }
 
 extension RequestProtocol {
@@ -21,9 +20,5 @@ extension RequestProtocol {
 
     var path: String {
         return "/users/"
-    }
-
-    var method: HTTPMethod {
-        return .get
     }
 }

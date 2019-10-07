@@ -6,11 +6,12 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-import Alamofire
 import RxSwift
+import Foundation
 
 enum ApiError: Error {
     case invalidurl
+    case responseError
 }
 
 struct ApiClient {    
@@ -22,16 +23,16 @@ struct ApiClient {
                 return disposable
             }
             
-            Alamofire.request(url, method: .get)
-                .validate()
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        observer(.success(data))
-                    case .failure(let error):
-                        observer(.error(error))
-                    }
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, let _ = response else {
+                    observer(.error(ApiError.responseError))
+                    return
+                }
+                
+                observer(.success(data))
             }
+            
+            task.resume()
             return disposable
         }
     }

@@ -13,9 +13,9 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Property -
     
-    private @IBOutlet var searchBar: UISearchBar!
+    @IBOutlet private var searchBar: UISearchBar!
     
-    private @IBOutlet var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView!
     
     private let disposeBag = DisposeBag()
     
