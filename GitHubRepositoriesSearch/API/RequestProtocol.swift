@@ -11,6 +11,7 @@ import Foundation
 protocol RequestProtocol {
     var baseUrl: String { get }
     var path: String { get }
+    var endpoint: String { get }
 }
 
 extension RequestProtocol {
@@ -20,5 +21,9 @@ extension RequestProtocol {
 
     var path: String {
         return "/users/"
+    }
+    
+    var endpoint: String {
+        return "/repos"
     }
 }

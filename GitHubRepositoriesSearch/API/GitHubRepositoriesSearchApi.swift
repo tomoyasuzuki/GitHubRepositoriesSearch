@@ -16,7 +16,7 @@ final class GitHubRepositoriesSearchApi: RequestProtocol {
     }
     
     func fetchRepository(queryText: String, complition: @escaping(Result<GitHubSearchRepository, Error>) -> Void) {
-        api.request(url: baseUrl + path + queryText + "/repos") { result in
+        api.request(url: baseUrl + path + queryText + endpoint) { result in
             switch result {
             case .success(let data):
                 do {
