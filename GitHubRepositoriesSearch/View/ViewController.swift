@@ -30,13 +30,12 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configurePresenter()
         
         tableView.delegate = self
         tableView.dataSource = self
         
         searchBar.delegate = self
-        
-        configurePresenter()
     }
     
     // MARK: Delegate
