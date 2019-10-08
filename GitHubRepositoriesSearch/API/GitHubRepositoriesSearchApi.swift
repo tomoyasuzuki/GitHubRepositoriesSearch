@@ -6,7 +6,7 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-import RxSwift
+import Foundation
 
 final class GitHubRepositoriesSearchApi: RequestProtocol {
     private let api: ApiClient
@@ -15,10 +15,20 @@ final class GitHubRepositoriesSearchApi: RequestProtocol {
         self.api = api
     }
     
-    func fetchRepository(queryText: String) -> Single<GitHubSearchRepository> {
-        return api.request(url: baseUrl + path + "\(queryText)" + "/repos")
-            .map { data in
-                try JSONDecoder().decode(GitHubSearchRepository.self, from: data)
+    func fetchRepository(queryText: String, complition: @escaping(Result<GitHubSearchRepository, Error>) -> Void) {
+        api.request(url: baseUrl + path + queryText + "/repos") { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let repositories = try JSONDecoder().decode(GitHubSearchRepository.self, from: data)
+                    complition(.success(repositories))
+                } catch let error {
+                    complition(.error(error))
+                    print(error.localizedDescription)
+                }
+            case .error(let error):
+                complition(.error(error))
+            }
         }
     }
 }

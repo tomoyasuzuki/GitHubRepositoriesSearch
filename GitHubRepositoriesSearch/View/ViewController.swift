@@ -6,22 +6,27 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
+import Foundation
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    // MARK: - Property -
+protocol ViewProtocol {
+    func configurePresenter() -> Void
+    func reloadData() -> Void
+    func showError(error: Error) -> Void
+    func setView() -> Void
+}
+
+final class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ViewProtocol, UISearchBarDelegate {
+    
+    // MARK: Property
     
     @IBOutlet private var searchBar: UISearchBar!
     
     @IBOutlet private var tableView: UITableView!
     
-    private let disposeBag = DisposeBag()
+    private var presenter: PresenterProtocol?
     
-    var viewModel: ViewModel?
-    
-    // MARK: - Life Cycle -
+    // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,35 +34,54 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         
-        configureViewModel()
+        searchBar.delegate = self
+        
+        configurePresenter()
     }
     
-    // MARK: - Delegate -
+    // MARK: Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel!.repositories.count
+        return presenter!.countRepos()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = viewModel!.repositories[indexPath.row].name
-        cell.detailTextLabel?.text = viewModel!.repositories[indexPath.row].url
+        let repos = presenter!.bindRepos()
+        cell.textLabel?.text = repos[indexPath.row].name
+        cell.detailTextLabel?.text = repos[indexPath.row].url
         
         cell.detailTextLabel?.textColor = UIColor.gray
         return cell
     }
     
-    private func configureViewModel() {
-        viewModel = AppDelegate.container.resolve(ViewModel.self)
+    func configurePresenter() {
+        presenter = AppDelegate.container.resolve(Presenter.self)
+        setView()
+    }
+    
+    func showError(error: Error) {
+        let alert = UIAlertController(title: "Error", message: "Error happened", preferredStyle:  UIAlertController.Style.alert)
         
-        let input = ViewModel.Input(searchTextDidChange: searchBar.rx.text.orEmpty.asDriver())
-        let output = viewModel!.bind(input: input)
+        let closeAction = UIAlertAction(title: "close", style: UIAlertAction.Style.cancel, handler: nil)
         
-        output
-            .repositories
-            .drive(onNext: { _ in
-                self.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
+        alert.addAction(closeAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        DispatchQueue.global().async { [weak self] _ in
+            self?.presenter!.fetch(text: searchText)
+        }
+    }
+    
+    func reloadData() {
+        DispatchQueue.main.async { [weak self] _ in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    func setView() {
+        presenter!.setView(view: self)
     }
 }

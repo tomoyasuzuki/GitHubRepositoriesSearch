@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // GitHubRepositoriesSearchApiのregister
         container.register(GitHubRepositoriesSearchApi.self) { r in GitHubRepositoriesSearchApi(api: r.resolve(ApiClient.self)!)}
         
-        // ViewModelのregister
-        container.register(ViewModel.self) { r in ViewModel(githubRepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
+        // Presenterのregister
+        container.register(Presenter.self) { r in Presenter(githubRepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
         
         return container
     }()
