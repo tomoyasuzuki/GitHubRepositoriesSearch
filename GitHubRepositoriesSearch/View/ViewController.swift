@@ -69,14 +69,14 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        DispatchQueue.global().async { [weak self] _ in
-            self?.presenter!.fetch(text: searchText)
+        DispatchQueue.global().async {
+            self.presenter!.fetch(text: searchText)
         }
     }
     
     func reloadData() {
-        DispatchQueue.main.async { [weak self] _ in
-            self?.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
