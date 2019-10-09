@@ -81,7 +81,6 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func setView() {
-        guard let presenter = self.presenter else { return }
-        presenter.setView(view: self)
+        presenter!.setView(view: self)
     }
 }
