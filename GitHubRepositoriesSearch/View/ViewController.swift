@@ -8,15 +8,10 @@
 
 import UIKit
 import Foundation
+import RxSwift
+import RxCocoa
 
-protocol ViewProtocol {
-    func configurePresenter() -> Void
-    func reloadData() -> Void
-    func showError(error: Error) -> Void
-    func setView() -> Void
-}
-
-final class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ViewProtocol, UISearchBarDelegate {
+final class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     // MARK: Property
     
@@ -24,63 +19,61 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet private var tableView: UITableView!
     
-    private var presenter: PresenterProtocol?
+    private var store: Store!
+    private var action: ActionCreator!
+    private let disposeBag = DisposeBag()
     
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurePresenter()
         
         tableView.delegate = self
         tableView.dataSource = self
         
         searchBar.delegate = self
+        
+        configureStore()
+        configureAction()
     }
     
     // MARK: Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter!.countRepos()
+        return store.repositories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let repos = presenter!.bindRepos()
-        cell.textLabel?.text = repos[indexPath.row].name
-        cell.detailTextLabel?.text = repos[indexPath.row].url
+        cell.textLabel?.text = store.repositories[indexPath.row].name
+        cell.detailTextLabel?.text = store.repositories[indexPath.row].url
         
         cell.detailTextLabel?.textColor = UIColor.gray
         return cell
     }
     
-    func configurePresenter() {
-        presenter = AppDelegate.container.resolve(Presenter.self)
-        setView()
-    }
-    
-    func showError(error: Error) {
-        let alert = UIAlertController(title: "Error", message: "Error happened", preferredStyle:  UIAlertController.Style.alert)
+    func configureStore() {
+        store = AppDelegate.container.resolve(Store.self)
         
-        let closeAction = UIAlertAction(title: "close", style: UIAlertAction.Style.cancel, handler: nil)
+        store
+            .output
+            .subscribe(onNext: { event in
+                switch event {
+                case .reloadTableView:
+                    self.tableView.reloadData()
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func configureAction() {
+        action = AppDelegate.container.resolve(ActionCreator.self)
         
-        alert.addAction(closeAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        DispatchQueue.global().async {
-            self.presenter!.fetch(text: searchText)
-        }
-    }
-    
-    func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
-    func setView() {
-        presenter!.setView(view: self)
+        action
+            .fetch(text: self.searchBar.rx.text.orEmpty.asDriver())
+            .subscribe(onNext: { _ in })
+            .disposed(by: disposeBag)
     }
 }

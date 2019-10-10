@@ -22,8 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // GitHubRepositoriesSearchApiのregister
         container.register(GitHubRepositoriesSearchApi.self) { r in GitHubRepositoriesSearchApi(api: r.resolve(ApiClient.self)!)}
         
-        // Presenterのregister
-        container.register(Presenter.self) { r in Presenter(githubRepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
+        // Dispatcherのregister
+        container.register(Dispatcher.self) { _ in Dispatcher.shared }
+        
+        // ActionCreatorのregister
+        container.register(ActionCreator.self) { r in ActionCreator(githubRepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!, dispatcher: r.resolve(Dispatcher.self)!)}
+        
+        // Storeのregister
+        container.register(Store.self) { r in Store(dispatcher: r.resolve(Dispatcher.self)!)}
         
         return container
     }()
