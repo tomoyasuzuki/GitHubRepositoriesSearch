@@ -12,7 +12,8 @@ import RxSwift
 final class ActionCreator {
     private let githubRepositoryApi: GitHubRepositoriesSearchApi
     private let dispatcher: Dispatcher
-
+    private let disposeBag = DisposeBag()
+    
     init(githubRepositoryApi: GitHubRepositoriesSearchApi, dispatcher: Dispatcher) {
         self.githubRepositoryApi = githubRepositoryApi
         self.dispatcher = dispatcher
@@ -31,7 +32,7 @@ final class ActionCreator {
                     }
             }
             .do(onNext: { [weak self] repos in
-                self?.dispatcher.dispatch(action: .updateRepository(repos))
+                self?.dispatcher.dispatch(action: RepositoryAction(repository: repos))
             })
             .map { _ in ()}
     }

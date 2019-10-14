@@ -13,24 +13,16 @@ final class Store {
     private let disposeBag = DisposeBag()
     private let dispatcher: Dispatcher
 
-    var repositories: [Repository] = []
-    let output = PublishSubject<ViewOuputEvent>()
+    var notifyRepository = BehaviorSubject<[Repository]>(value: [])
 
     init(dispatcher: Dispatcher) {
         self.dispatcher = dispatcher
-
-        self.dispatcher
-            .output
-            .subscribe { [weak self] action in
-                guard let actionType = action.element else { return }
-                switch actionType {
-                case let .updateRepository(repos):
-                    self?.repositories = repos
-                    self?.output.onNext(.reloadTableView)
-                default:
-                    break
-                }
-            }
-            .disposed(by: disposeBag)
+        
+        let repositories: Observable<RepositoryAction> = self.dispatcher.observe()
+        
+        repositories.subscribe(onNext: { [weak self] repos in
+            self?.notifyRepository.onNext(repos.repository)
+        })
+        .disposed(by: disposeBag)
     }
 }

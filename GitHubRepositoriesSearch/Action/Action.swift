@@ -6,7 +6,12 @@
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
 
-enum Action {
-    case fetchRepository(String)
-    case updateRepository([Repository])
+protocol ActionProtocol {}
+
+struct RepositoryAction: ActionProtocol {
+    let repository: [Repository]
+    init(repository: [Repository]) {
+        self.repository = repository
+    }
 }
+

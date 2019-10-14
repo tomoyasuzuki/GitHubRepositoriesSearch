@@ -12,11 +12,15 @@ import RxCocoa
 
 final class Dispatcher {
     public static let shared = Dispatcher()
-    let output = PublishSubject<Action>()
+    private let subject = PublishSubject<ActionProtocol>()
     
     public init() {}
     
-    public func dispatch(action: Action) {
-        self.output.onNext(action)
+    public func dispatch(action: ActionProtocol) {
+        subject.onNext(action)
+    }
+    
+    public func observe<T: ActionProtocol>() -> Observable<T> {
+        return subject.asObservable().compactMap {$0 as? T}
     }
 }

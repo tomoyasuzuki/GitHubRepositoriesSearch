@@ -21,6 +21,7 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private var store: Store!
     private var action: ActionCreator!
+    private var repos: [Repository] = []
     private let disposeBag = DisposeBag()
     
     // MARK: Life Cycle
@@ -33,20 +34,20 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         searchBar.delegate = self
         
-        configureStore()
         configureAction()
+        configureStore()
     }
     
     // MARK: Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return store.repositories.count
+        return repos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = store.repositories[indexPath.row].name
-        cell.detailTextLabel?.text = store.repositories[indexPath.row].url
+        cell.textLabel?.text = repos[indexPath.row].name
+        cell.detailTextLabel?.text = repos[indexPath.row].url
         
         cell.detailTextLabel?.textColor = UIColor.gray
         return cell
@@ -56,14 +57,11 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
         store = AppDelegate.container.resolve(Store.self)
         
         store
-            .output
-            .subscribe(onNext: { event in
-                switch event {
-                case .reloadTableView:
-                    self.tableView.reloadData()
-                default:
-                    break
-                }
+            .notifyRepository
+            .asDriver(onErrorDriveWith: Driver.empty())
+            .drive(onNext: { [weak self] repos in
+                self?.repos = repos
+                self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
     }
