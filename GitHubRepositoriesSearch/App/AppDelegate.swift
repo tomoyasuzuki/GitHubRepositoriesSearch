@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         container.register(GitHubRepositoriesSearchApi.self) { r in GitHubRepositoriesSearchApi(api: r.resolve(ApiClient.self)!)}
         
         // Dispatcherのregister
-        container.register(Dispatcher.self) { _ in Dispatcher.shared }
+        container.register(Dispatcher.self) { _ in Dispatcher() }.inObjectScope(.container)
         
         // ActionCreatorのregister
         container.register(ActionCreator.self) { r in ActionCreator(githubRepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!, dispatcher: r.resolve(Dispatcher.self)!)}

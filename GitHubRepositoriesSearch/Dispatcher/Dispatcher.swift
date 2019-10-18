@@ -11,10 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class Dispatcher {
-    public static let shared = Dispatcher()
     private let subject = PublishSubject<ActionProtocol>()
-    
-    public init() {}
     
     public func dispatch(action: ActionProtocol) {
         subject.onNext(action)
