@@ -8,6 +8,7 @@
 
 import UIKit
 import Swinject
+import KeychainAccess
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,14 +17,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     static var container: Container = {
         let container = Container()
-        // ApiClientのregister
+        // ApiClient
         container.register(ApiClient.self) { _ in ApiClient()}
         
-        // GitHubRepositoriesSearchApiのregister
+        // GitHubRepositoriesSearchApi
         container.register(GitHubRepositoriesSearchApi.self) { r in GitHubRepositoriesSearchApi(api: r.resolve(ApiClient.self)!)}
         
-        // Presenterのregister
+        // Presenter
         container.register(Presenter.self) { r in Presenter(githubRepositoryApi: r.resolve(GitHubRepositoriesSearchApi.self)!)}
+        
+        // AuthPresenter
+        container.register(AuthPresenter.self) { r in AuthPresenter(keychain: r.resolve(Keychain.self)!) }
+        
+        // Keychain (singleton)
+        container.register(Keychain.self) { r in Keychain(service: Bundle.main.bundleIdentifier!) }.inObjectScope(.container)
         
         return container
     }()

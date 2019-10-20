@@ -10,6 +10,13 @@
 		21EBF5D700E16A574BD65054 /* Pods_GitHubRepositoriesSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C04E463B7740E56405ED59 /* Pods_GitHubRepositoriesSearch.framework */; };
 		570A0C45234B50B000FD2461 /* RequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570A0C44234B50B000FD2461 /* RequestProtocol.swift */; };
 		570A0C4E234C3D3E00FD2461 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570A0C4D234C3D3D00FD2461 /* Error.swift */; };
+		572C06012359E97700F08260 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06002359E97700F08260 /* User.swift */; };
+		572C06032359EC8200F08260 /* AuthPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06022359EC8200F08260 /* AuthPresenter.swift */; };
+		572C06072359ECA500F08260 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06062359ECA500F08260 /* AuthViewController.swift */; };
+		572C060A2359F50500F08260 /* ExtentionKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06092359F50500F08260 /* ExtentionKeychain.swift */; };
+		572C060F235C2FE100F08260 /* SignInError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C060E235C2FE100F08260 /* SignInError.swift */; };
+		572C0611235C2FF000F08260 /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0610235C2FF000F08260 /* SignUpError.swift */; };
+		572C0613235C322E00F08260 /* ExtentionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0612235C322E00F08260 /* ExtentionError.swift */; };
 		5731461122C762C0000E642B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5731461022C762C0000E642B /* APIClient.swift */; };
 		575E8544227C719A005F384E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E8543227C719A005F384E /* AppDelegate.swift */; };
 		575E8546227C719A005F384E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E8545227C719A005F384E /* ViewController.swift */; };
@@ -25,6 +32,13 @@
 /* Begin PBXFileReference section */
 		570A0C44234B50B000FD2461 /* RequestProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestProtocol.swift; sourceTree = "<group>"; };
 		570A0C4D234C3D3D00FD2461 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		572C06002359E97700F08260 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		572C06022359EC8200F08260 /* AuthPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPresenter.swift; sourceTree = "<group>"; };
+		572C06062359ECA500F08260 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		572C06092359F50500F08260 /* ExtentionKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionKeychain.swift; sourceTree = "<group>"; };
+		572C060E235C2FE100F08260 /* SignInError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInError.swift; sourceTree = "<group>"; };
+		572C0610235C2FF000F08260 /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
+		572C0612235C322E00F08260 /* ExtentionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionError.swift; sourceTree = "<group>"; };
 		5731461022C762C0000E642B /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		575E8540227C719A005F384E /* GitHubRepositoriesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubRepositoriesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		575E8543227C719A005F384E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +93,7 @@
 			children = (
 				575E855A227D71FF005F384E /* GitHubRepositoryElement.swift */,
 				57A02279228175E700F63D99 /* Repository.swift */,
+				572C06002359E97700F08260 /* User.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -87,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				575E857C227E8153005F384E /* Presenter.swift */,
+				572C06022359EC8200F08260 /* AuthPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -95,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				575E8545227C719A005F384E /* ViewController.swift */,
+				572C06062359ECA500F08260 /* AuthViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -113,6 +130,24 @@
 			children = (
 			);
 			path = Extention;
+			sourceTree = "<group>";
+		};
+		572C06082359F4E600F08260 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				572C06092359F50500F08260 /* ExtentionKeychain.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		572C060D235C2FCB00F08260 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				572C0612235C322E00F08260 /* ExtentionError.swift */,
+				572C060E235C2FE100F08260 /* SignInError.swift */,
+				572C0610235C2FF000F08260 /* SignUpError.swift */,
+			);
+			path = Error;
 			sourceTree = "<group>";
 		};
 		575E8537227C719A005F384E = {
@@ -140,7 +175,9 @@
 				570A0C43234B503E00FD2461 /* DataModel */,
 				570A0C46234B511E00FD2461 /* Presenter */,
 				570A0C47234B514900FD2461 /* View */,
+				572C060D235C2FCB00F08260 /* Error */,
 				570A0C48234B516F00FD2461 /* App */,
+				572C06082359F4E600F08260 /* Helper */,
 				575E8547227C719A005F384E /* Main.storyboard */,
 				575E854A227C71A0005F384E /* Assets.xcassets */,
 				575E854C227C71A0005F384E /* LaunchScreen.storyboard */,
@@ -272,14 +309,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				572C060A2359F50500F08260 /* ExtentionKeychain.swift in Sources */,
 				570A0C4E234C3D3E00FD2461 /* Error.swift in Sources */,
 				57A0227A228175E700F63D99 /* Repository.swift in Sources */,
 				5731461122C762C0000E642B /* APIClient.swift in Sources */,
 				575E8546227C719A005F384E /* ViewController.swift in Sources */,
+				572C0611235C2FF000F08260 /* SignUpError.swift in Sources */,
+				572C06072359ECA500F08260 /* AuthViewController.swift in Sources */,
+				572C0613235C322E00F08260 /* ExtentionError.swift in Sources */,
+				572C060F235C2FE100F08260 /* SignInError.swift in Sources */,
 				570A0C45234B50B000FD2461 /* RequestProtocol.swift in Sources */,
+				572C06032359EC8200F08260 /* AuthPresenter.swift in Sources */,
 				575E8544227C719A005F384E /* AppDelegate.swift in Sources */,
 				575E8558227D6C6E005F384E /* GitHubRepositoriesSearchApi.swift in Sources */,
 				575E855B227D71FF005F384E /* GitHubRepositoryElement.swift in Sources */,
+				572C06012359E97700F08260 /* User.swift in Sources */,
 				575E857D227E8153005F384E /* Presenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
