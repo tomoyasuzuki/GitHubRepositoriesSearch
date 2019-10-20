@@ -13,7 +13,7 @@
 		572C06012359E97700F08260 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06002359E97700F08260 /* User.swift */; };
 		572C06032359EC8200F08260 /* AuthPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06022359EC8200F08260 /* AuthPresenter.swift */; };
 		572C06072359ECA500F08260 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06062359ECA500F08260 /* AuthViewController.swift */; };
-		572C060A2359F50500F08260 /* ExtentionKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06092359F50500F08260 /* ExtentionKeychain.swift */; };
+		572C060A2359F50500F08260 /* KeychainKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C06092359F50500F08260 /* KeychainKey.swift */; };
 		572C060F235C2FE100F08260 /* SignInError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C060E235C2FE100F08260 /* SignInError.swift */; };
 		572C0611235C2FF000F08260 /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0610235C2FF000F08260 /* SignUpError.swift */; };
 		572C0613235C322E00F08260 /* ExtentionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0612235C322E00F08260 /* ExtentionError.swift */; };
@@ -35,7 +35,7 @@
 		572C06002359E97700F08260 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		572C06022359EC8200F08260 /* AuthPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPresenter.swift; sourceTree = "<group>"; };
 		572C06062359ECA500F08260 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
-		572C06092359F50500F08260 /* ExtentionKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionKeychain.swift; sourceTree = "<group>"; };
+		572C06092359F50500F08260 /* KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainKey.swift; sourceTree = "<group>"; };
 		572C060E235C2FE100F08260 /* SignInError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInError.swift; sourceTree = "<group>"; };
 		572C0610235C2FF000F08260 /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
 		572C0612235C322E00F08260 /* ExtentionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionError.swift; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 		572C06082359F4E600F08260 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				572C06092359F50500F08260 /* ExtentionKeychain.swift */,
+				572C06092359F50500F08260 /* KeychainKey.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				572C060A2359F50500F08260 /* ExtentionKeychain.swift in Sources */,
+				572C060A2359F50500F08260 /* KeychainKey.swift in Sources */,
 				570A0C4E234C3D3E00FD2461 /* Error.swift in Sources */,
 				57A0227A228175E700F63D99 /* Repository.swift in Sources */,
 				5731461122C762C0000E642B /* APIClient.swift in Sources */,
