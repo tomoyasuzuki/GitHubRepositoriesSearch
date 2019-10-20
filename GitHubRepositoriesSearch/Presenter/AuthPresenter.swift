@@ -63,12 +63,10 @@ final class AuthPresenter: AuthPresenterProtocol {
         }
         
         if !email.contains("@") || !email.contains(".") {
-            view?.showError(error: SignUpError.emailIsInvalid, kind: .signUpError(.emailIsInvalid))
+            view?.showError(error: SignInError.userIsNotExists, kind: .signInError(.userIsNotExists))
             return
-        }
-        
-        if password.count < 10 {
-            view?.showError(error: SignUpError.passwordIsInvalid, kind: .signUpError(.passwordIsInvalid))
+        } else if password.count < 10 {
+            view?.showError(error: SignInError.emailAndPasswordIsNotMatch, kind: .signInError(.emailAndPasswordIsNotMatch))
             return
         }
         

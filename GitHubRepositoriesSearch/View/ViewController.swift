@@ -21,7 +21,6 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Property
     
     @IBOutlet private var searchBar: UISearchBar!
-    
     @IBOutlet private var tableView: UITableView!
     
     private var presenter: PresenterProtocol?
@@ -36,6 +35,8 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         
         searchBar.delegate = self
+        
+        navigationItem.hidesBackButton = true
     }
     
     // MARK: Delegate

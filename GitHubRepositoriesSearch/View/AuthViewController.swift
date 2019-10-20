@@ -21,7 +21,7 @@ final class AuthViewController: UIViewController, AuthViewProtocol{
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
-    private var presenter: AuthPresenterProtocol!
+    private var presenter: AuthPresenterProtocol?
     
     
     override func viewDidLoad() {
@@ -34,7 +34,7 @@ final class AuthViewController: UIViewController, AuthViewProtocol{
     @objc func signInButtonTapped() {
         view.endEditing(true)
         
-        presenter.signIn(userNameTextField.text,
+        presenter?.signIn(userNameTextField.text,
                          emailTextField.text,
                          passwordTextField.text)
     }
@@ -42,13 +42,14 @@ final class AuthViewController: UIViewController, AuthViewProtocol{
     @objc func signUpButtonTapped() {
         view.endEditing(true)
         
-        presenter.signUp(userNameTextField.text,
+        presenter?.signUp(userNameTextField.text,
                          emailTextField.text,
                          passwordTextField.text)
     }
     
     private func configurePresenter() {
         presenter = AppDelegate.container.resolve(AuthPresenter.self)
+        presenter?.setView(view: self)
     }
     
     private func configureUI() {
@@ -77,6 +78,6 @@ final class AuthViewController: UIViewController, AuthViewProtocol{
     }
     
     func navigateToTop() {
-        self.navigationController?.pushViewController(ViewController(), animated: true)
+        self.performSegue(withIdentifier: "toViewController", sender: nil)
     }
 }
