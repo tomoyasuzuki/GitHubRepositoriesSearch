@@ -31,21 +31,32 @@ final class AuthPresenter: AuthPresenterProtocol {
         if !email.contains("@") || !email.contains(".") {
             view?.showError(error: SignInError.userIsNotExists, kind: .signInError(.userIsNotExists))
             return
-        }
-        
-        if password.count < 10 {
+        } else if password.count < 10 {
             view?.showError(error: SignInError.emailAndPasswordIsNotMatch, kind: .signInError(.emailAndPasswordIsNotMatch))
             return
         }
-        
-        // ログイン処理（サンプルのため省略）
-        
-        // 画面遷移
-        view?.navigateToTop()
+       
+        do {
+            guard let userEmail = try keychain.get(KeychainKey.email.rawValue),
+                let userPassword = try keychain.get(KeychainKey.password.rawValue)  else {
+                return
+            }
+          
+            if userEmail == email, userPassword == password {
+                view?.navigateToTop()
+            } else {
+                view?.showError(error: SignInError.emailAndPasswordIsNotMatch, kind: .signInError(.emailAndPasswordIsNotMatch))
+                return
+            }
+            
+        } catch {
+            view?.showError(error: SignInError.userIsNotExists, kind: .signInError(.userIsNotExists))
+            return
+        }
     }
     
     func signUp(_ userName: String?, _ email: String?, _ password: String?) {
-        guard let _ = userName,
+        guard let userName = userName,
             let email = email,
             let password = password else {
             return
@@ -61,19 +72,17 @@ final class AuthPresenter: AuthPresenterProtocol {
             return
         }
         
-        // パスワード変更時などに使用するかもしれない
         do {
             try keychain.set(password, key: KeychainKey.password.rawValue)
             try keychain.set(email, key: KeychainKey.email.rawValue)
+            
+            UserDefaults.standard.set(userName, forKey: "userName")
+            
+            view?.navigateToTop()
         } catch let error {
             view?.showError(error: error, kind: .systemError)
+            return
         }
-        
-        // 登録処理（サンプルのため省略）
-        
-        // 画面遷移
-        view?.navigateToTop()
-        
     }
     
     func setView(view: AuthViewProtocol) {
