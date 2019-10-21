@@ -25,6 +25,8 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private var presenter: PresenterProtocol?
     
+    private var detailUrlString: String?
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -55,6 +57,23 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let url = presenter?.bindRepos()[indexPath.row].url else {
+            return
+        }
+        
+        detailUrlString = url
+        
+        self.performSegue(withIdentifier: "toDetailViewController", sender: detailUrlString)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toDetailViewController" {
+            let vc = segue.destination as? DetailViewController
+            vc?.urlString = sender as? String
+        }
+    }
+    
     func configurePresenter() {
         presenter = AppDelegate.container.resolve(Presenter.self)
         setView()
@@ -70,15 +89,11 @@ final class ViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        DispatchQueue.global().async {
-            self.presenter!.fetch(text: searchText)
-        }
+        self.presenter!.fetch(text: searchText)
     }
     
     func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
     }
     
     func setView() {

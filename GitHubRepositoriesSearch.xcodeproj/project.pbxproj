@@ -17,6 +17,7 @@
 		572C060F235C2FE100F08260 /* SignInError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C060E235C2FE100F08260 /* SignInError.swift */; };
 		572C0611235C2FF000F08260 /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0610235C2FF000F08260 /* SignUpError.swift */; };
 		572C0613235C322E00F08260 /* ExtentionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0612235C322E00F08260 /* ExtentionError.swift */; };
+		572C0615235C84DF00F08260 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C0614235C84DF00F08260 /* DetailViewController.swift */; };
 		5731461122C762C0000E642B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5731461022C762C0000E642B /* APIClient.swift */; };
 		575E8544227C719A005F384E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E8543227C719A005F384E /* AppDelegate.swift */; };
 		575E8546227C719A005F384E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E8545227C719A005F384E /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 		572C060E235C2FE100F08260 /* SignInError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInError.swift; sourceTree = "<group>"; };
 		572C0610235C2FF000F08260 /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
 		572C0612235C322E00F08260 /* ExtentionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionError.swift; sourceTree = "<group>"; };
+		572C0614235C84DF00F08260 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		5731461022C762C0000E642B /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		575E8540227C719A005F384E /* GitHubRepositoriesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubRepositoriesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		575E8543227C719A005F384E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 			children = (
 				575E8545227C719A005F384E /* ViewController.swift */,
 				572C06062359ECA500F08260 /* AuthViewController.swift */,
+				572C0614235C84DF00F08260 /* DetailViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				572C060A2359F50500F08260 /* KeychainKey.swift in Sources */,
+				572C0615235C84DF00F08260 /* DetailViewController.swift in Sources */,
 				570A0C4E234C3D3E00FD2461 /* Error.swift in Sources */,
 				57A0227A228175E700F63D99 /* Repository.swift in Sources */,
 				5731461122C762C0000E642B /* APIClient.swift in Sources */,

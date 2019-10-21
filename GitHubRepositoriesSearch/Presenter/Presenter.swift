@@ -5,6 +5,7 @@
 //  Created by 鈴木友也 on 2019/05/05.
 //  Copyright © 2019 tomoya.suzuki. All rights reserved.
 //
+import Foundation
 
 protocol PresenterProtocol {
     func fetch(text: String) -> Void
@@ -36,23 +37,31 @@ final class Presenter: PresenterProtocol {
             return
         }
         
-        self.githubRepositoryApi.fetchRepository(queryText: text) {[weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let repos):
-                self.repositories.removeAll()
-                
-                for i in 0..<repos.count {
-                    guard let name = repos[i].name, let url = repos[i].url else {
-                        return
+        DispatchQueue.global().async {
+            self.githubRepositoryApi.fetchRepository(queryText: text) {[weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let repos):
+                    self.repositories.removeAll()
+                    
+                    for i in 0..<repos.count {
+                        guard let name = repos[i].name, let url = repos[i].htmlUrl else {
+                            return
+                        }
+                        
+                        self.repositories.append(Repository(name: name, url: url))
                     }
                     
-                    self.repositories.append(Repository(name: name, url: url))
+                    DispatchQueue.main.async {
+                        self.view?.reloadData()
+                    }
+                    
+                    
+                case .error(let error):
+                    DispatchQueue.main.async {
+                        self.view?.showError(error: error)
+                    }
                 }
-                
-                self.view?.reloadData()
-            case .error(let error):
-                self.view?.showError(error: error)
             }
         }
     }
